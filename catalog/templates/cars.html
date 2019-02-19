@@ -1,0 +1,138 @@
+{% include "home.html" %}
+{% block content %}
+
+	{% if  user_id %}
+	<a href="{{ url_for('newCar',carBrand_id=brand.id) }}">Add UR Car</a>
+	{% endif %}
+
+<div style="margin-left: 100px; margin-top: 0px;">
+	<p style="margin-left: 40%; font-size: 45px; margin-top: 0; font-weight: bold;">{{ brand.name }}</p>
+
+
+        <div class="container" style="padding-left: 140px;">
+            <div class="row">
+				{% for i in cars %}
+				<div class="col-lg-3 col-sm-6 col-xs-12 " style="width:240px; height: 350px;  margin-left: 15px; padding: 30px; margin-right: 5px; margin-bottom: 25px; background-color: white;">
+                    <div style="text-align: none; padding-left: 15px;"><img style="width: 160px; height: 100px;" src="../{{i.image1 }}"></div>
+               
+            		<div style="font-size: 20px; font-weight: bold; margin-top: 40px; margin-bottom: 10px;">
+	            		<span style="float: left">{{ i.name }}</span>
+	            		<span style="float: right;">{{ i.price }} Rs</span>
+            		</div>
+            		<!-- <div class="text-center">{{ i.description }}</div> -->
+                    <button style="margin-top: 15px; padding-left: 25px; margin-left: 40px;" class="btn btn-danger"><a style="color: white;" href="{{ url_for('singleCar',carBrand_id=brand.id,car_id=i.id) }}">More Info</a></button>
+                    <div style="margin-top: 25px; margin-bottom: 20px; text-align: center;" ><span>Ratings: {{i.ratings}}</span>
+                		{% if user_id == i.user_id %}
+                		<div style="margin-top: 25px;">
+                        	<button class="pull-left"> <a style="float: left; color: blue; font-weight: bold;"  data-toggle="modal" data-target="#caredit" data-id="{{i.id}}"
+                        onclick="$('#editform').attr('action', '{{ url_for('editCar',carBrand_id=brand.id,car_id=i.id) }}'),$('#carheading').text('{{i.name}}'),
+                        $('#name').val('{{ i.name }}'),$('#desc').val('{{ i.description }}'),
+                        $('#price').val('{{ i.price }}'),$('#year').val('{{ i.year }}'),
+                        $('#milage').val('{{ i.milage }}'),$('#first').val('{{ i.variant }}'),
+                        $('#second').val('{{ i.type }}'),
+                        $('#image1').val('{{ i.image1 }}'),$('#image2').val('{{ i.image1 }}'),
+                        $('#image3').val('{{ i.image1 }}'),$('#image4').val('{{ i.image1 }}')
+                        ">Edit</a></button>
+
+                        <button style="float: right; color: blue; font-weight: bold;"  data-toggle="modal" data-target="#deletecar" data-id="{{i.id}}"
+                        onclick="$('#deleteform').attr('action', '{{ url_for('deleteCar',carBrand_id=brand.id,car_id=i.id) }}')">Sold</button>
+						</div>
+                		{% endif %}
+                    </div>
+                </div>
+				{% endfor %}
+
+		  </div>
+        </div>
+</div>
+
+<div class="modal fade" id="caredit" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit car</h4>
+        </div>
+        <div class="modal-body">
+        	<h2 class="text-center" style="margin-top: 0; padding-top: 0;" id="carheading"></h2>
+    <form id="editform" method="POST" enctype="multipart/form-data">
+   	<span style="font-weight: bold; margin-right: 60px;">Name:</span><input list="Cars" id="name" name="name" value=""><br><br>
+   	<datalist>
+   		
+   	</datalist>
+   	<span style="font-weight: bold; margin-right: 20px;">Description:</span><input type="text" id="desc" name="desc" value="">
+    <br><br>
+   	<span style="font-weight: bold; margin-right: 60px;">Price:</span>
+   	<input type="text" id="price" name="price" value="">
+    <br><br>
+   	<span style="font-weight: bold; margin-right: 65px;">Year:</span>
+   	<input type="text" id="year" name="year" value="">
+    <br><br>
+   	<span style="font-weight: bold; margin-right: 53px;">Milage:</span>
+   	<input type="text" id="milage" name="milage" value="">
+    <br><br>
+   	<span style="font-weight: bold; margin-right: 20px;">Variant:</span>
+   	<fieldset style="float: right; margin-right: 220px;" id="first" >
+   	<input type="radio" name="variant" value="Diesel">Diesel
+   	<input type="radio" name="variant" value="Petrol">Petrol
+   	<input type="radio" name="variant" value="Lpg">Lpg
+   	<input type="radio" name="variant" value="Cng & Hybrid">Cng & Hybrid
+   </fieldset>
+   <br><br>
+   	<span style="font-weight: bold; margin-right: 20px;">Type:</span>
+   	<fieldset  style="float: right; margin-right: 235px;" id="second">
+   	<input type="radio" name="type" value="Hatch back">Hatch back
+   	<input type="radio" name="type" value="SUV">SUV
+   	<input type="radio" name="type" value="Sedan">Sedan
+   	<input type="radio" name="type" value="MPV">MPV
+   </fieldset>
+   <br><br>
+   	<span style="font-weight: bold;">Upload Images:</span>
+    <br><br>
+    <div class="row">
+     	<input class="col-lg-6" type="file" id="image1" name="image1" accept="image/*" value="">
+     	<input class="col-lg-6" type="file" id="image2" name="image2" accept="image/*" value="">
+     	<input style="margin-top: 15px;" class="col-lg-6" type="file" id="image3" name="image3" accept="image/*" value="">
+     	<input style="margin-top: 15px;" class="col-lg-6" type="file" id="image4" name="image4" accept="image/*" value="">
+    </div>
+    <br>
+   	<input type="submit" name="submit">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>   	
+
+
+   </form>
+
+        </div>
+      </div>
+      
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="deletecar" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Brand</h4>
+        </div>
+        <div class="modal-body">
+          <form id="deleteform" method = 'post'>
+          <h1>Sure you want to delete</h1>
+          <input type='submit', value = 'Delete'>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>    
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock content %}

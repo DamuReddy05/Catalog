@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <title>{% block title %} {% endblock title %}</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style type="text/css">
+
+  body{
+    background-color: rgba(0,0,0,0.1);
+  }
+
+  a,a:hover{
+    text-decoration: none;
+  }
+
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+  border-right: 5px solid grey;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: yellow;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.slidecontainer {
+  width: 100%;
+  color: yellow;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 12px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+ border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 23px;
+  height: 13px;
+ border-radius: 50%;
+  background: #4CAF50; 
+  cursor: pointer;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+<div class="sidenav">
+    {% if session.username %}
+    <div class="user">
+        <img style="border-radius: 50%; width: 150px; height: 150px; padding: 20px;" src="{{ session.picture }}">
+        <p style="font-size: 15px; color: white; word-break:break-word; float: right;">{{ session.username }}
+          <a style="float: center; margin-left: 25px; margin-top: 25px;" href="{{ url_for('gdisconnect') }}">
+            <!-- <span class="glyphicon glyphicon-log-out"></span> -->Logout
+          </a>
+        </p>
+    </div>
+    {% endif %}
+
+    {% if not session.username %}
+        <span style="margin: 10px; margin-top: 0; padding-top: 0;">
+          <a href="{{ url_for('showLogin') }}" style="color: yellow; " id="glyp"><span class="glyphicon glyphicon-log-in"></span><span style="padding-left: 15px; font-size: 20px;">Login</span></a></span>
+    {% endif %}
+</div>
+
+ <nav class="nav navbar-inverse" id="inverse" style="background: #111; height: 80px; margin-bottom: 0px; ">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+                        <div class="icon-bar"></div>
+                        <div class="icon-bar"></div>
+                        <div class="icon-bar"></div>
+                    </button>
+                </div>
+                    <div class="collapse navbar-collapse " style="padding-top: 10px;" id="mynavbar">
+                      <div class="nav navbar-brand">
+                      
+                      <button style="margin-left: 150px; font-size: 20px; margin-right:3px;" class="btn btn-danger btn-rounded" ><a style="color: white; " href="{{ url_for( 'carBrand' ) }}"> <i class="fa fa-home mr-5"></i> Home </a></button>
+
+                        {% if sender=='carBrand' %}
+                            <span style="margin-left: 150px; color: yellow; font-size: 40px; font-weight: bold;">....WELCOME TO <span style="color: #ea4c89;">Car World....</span></span>
+                            
+                      </div>
+                            <ul class="nav navbar-nav navbar-right" id="navcol">
+                                {% if session.username %}
+                                  <button style="margin-top: 10px; margin-right:3px;" class="btn btn-danger btn-rounded" data-toggle="modal" data-target="#brandadd"><a style="color: white; " > <i class="fa fa-plus mr-5"></i> New Brand</a></button>
+                                  <button style="margin-top: 10px;" class="btn btn-default"><a style="color: black" href="{{ url_for('wishlist') }}">wish list</a></button>
+                                {% endif %}
+                        {% endif %}
+
+
+                        {% if sender=='cars' %}
+                            <span style="margin-left: 250px; color: yellow; font-size: 40px; font-weight: bold;">....Cars <span style="color: #ea4c89;">For Sale....</span></span>
+                      </div>
+                            <ul class="nav navbar-nav navbar-right" id="navcol">
+                                {% if session.username %}
+                                  <button style="margin-top: 10px; margin-right:3px;" class="btn btn-danger btn-rounded" data-toggle="modal" data-target="#caradd"><a style="color: white; " > <i class="fa fa-plus mr-5"></i> New Car</a></button>
+                                  <button style="margin-top: 10px;" class="btn btn-default"><a style="color: black" href="{{ url_for('wishlist') }}">wish list</a></button>
+                                {% endif %}
+                        {% endif %}   
+
+
+                       {% if sender=="wish" %}
+                        <span style="margin-left: 250px; color: yellow; font-size: 40px; font-weight: bold;">....My <span style="color: #ea4c89;">WishList....</span></span>
+                      </div>
+                            <ul class="nav navbar-nav navbar-right" id="navcol">
+                                    
+                                  <button style="margin-top: 10px;" class="btn btn-default"><a style="color: black" href="{{ url_for('clearwish',user_id=user_id) }}">Clear wishlist</a></button>
+
+                      {% endif %}
+
+
+                        </ul>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </nav>
+
+
+{% if sender == 'carBrand' %}
+<div class="modal fade" id="brandadd" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add New Brand</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ url_for('newcarBrand') }}" method='POST' enctype="multipart/form-data" method='POST'  autocomplete="off">
+              <p>Name:</p>
+              <input list="Brand" name="name">
+              <datalist id='Brand' required="required">
+                {% for i in comp %}
+                <option value="{{ i.name }}"></option>
+                {% endfor %}
+              </datalist>
+              <p>Brand Image:</p>
+              <input type="file" name="imagefile" accept="image/*" value="choose image" required="required">
+              <br>
+              <br>
+              <input type="submit" class="btn btn-succes" name="submit">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </form>
+
+        </div>
+        
+      </div>
+      </div>
+    </div>
+{% endif %}
+
+
+
+
+
+{% if sender == 'cars' %}
+<div class="modal fade" id="caradd" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add New Car</h4>
+        </div>
+        <div class="modal-body">
+         <h2>{{ brand.name }}</h2>
+   <form action="{{ url_for('newCar',carBrand_id=brand.id) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+    <p>Name:</p>
+    <input list="Cars" name="name">
+    <datalist id="Cars" required="required">
+      {% for i in cars %}
+      <option value="{{ i.name }}"></option>
+      {% endfor %}
+    </datalist>
+    <p>Description:</p>
+    <input type="text" name="desc" required="required">
+    <p>Price:</p>
+    <input type="text" name="price" required="required">
+    <p>Year:</p>
+    <input type="text" name="year" required="required">
+    <p>Milage:</p>
+    <input type="text" name="milage" required="required">
+    <p>Variant:</p>
+    <fieldset id="first" required="required">
+    <input type="radio" name="variant" value="Diesel">Diesel
+    <input type="radio" name="variant" value="Petrol">Petrol
+    <input type="radio" name="variant" value="Lpg">Lpg
+    <input type="radio" name="variant" value="Cng & Hybrid">Cng & Hybrid
+   </fieldset>
+
+    <p>Type:</p>
+    <fieldset id="second" required="required">
+    <input type="radio" name="type" value="Hatch back">Hatch back
+    <input type="radio" name="type" value="SUV">SUV
+    <input type="radio" name="type" value="Sedan">Sedan
+    <input type="radio" name="type" value="MPV">MPV
+   </fieldset>
+    <p>Upload Images:</p>
+    <input type="file" name="image1" accept="image/*" required="required">
+    <input type="file" name="image2" accept="image/*" required="required">
+    <input type="file" name="image3" accept="image/*" required="required">
+    <input type="file" name="image4" accept="image/*" required="required">
+    <input type="submit" name="submit">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+
+
+   </form>
+        </div>
+      </div>
+      </div>
+    </div>
+    {% endif %}
+
+              {% with messages = get_flashed_messages() %}
+                 {% if messages %}
+                        <ul class="text-center" style="font-size: 20px; height: 30px; margin-bottom: 10px;  background-color: lawngreen;">
+                       {% for i in messages %}
+                             <li>{{ i }}</li>
+                        {% endfor %}
+                        </ul> 
+                  {% endif %}
+                {% endwith %}
+
+    <div class="container" style="margin-bottom: 0px;">
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+<script>
+var slider1 = document.getElementById("Model");
+var output1 = document.getElementById("demo1");
+output1.innerHTML = slider1.value;
+
+slider1.oninput = function() {
+  output1.innerHTML = this.value;
+}
+</script>
+
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+</script>
+
+</body>
+</html>

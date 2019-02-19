@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cars </title>
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <style type="text/css">
+      	a,a:hover{
+      		color: rgba(0,0,0,0.9);
+      		font-weight: bold;
+      	}
+      </style> 
+</head>
+<body  style="background-color: #FF6347; color: white;">
+
+
+<div style="float: right; margin-right: 20px; ">
+<button style="padding: 10px; font-size: 20px; padding-left: 20px; padding-right: 20px;" type="button" class="btn btn-primary glyphicon glyphicon-home"><a href="{{ url_for('carBrand') }}"> Home</a></button>
+<button style="padding: 10px; padding-left: 20px; padding-right: 20px; font-size: 20px;" type="button" class="btn btn-success glyphicon glyphicon-backward"><a href="{{ url_for('cars',carBrand_id=car.CarBrand_id) }}"> Back</a></button>
+</div>
+              {% with messages = get_flashed_messages() %}
+                 {% if messages %}
+                        <ul class="text-center" style="font-size: 20px; height: 30px; margin-bottom: 10px;  background-color: black;">
+                       {% for i in messages %}
+                             <li>{{ i }}</li>
+                        {% endfor %}
+                        </ul> 
+                  {% endif %}
+                {% endwith %}
+<p style="margin-left: 7%; margin-top: 20px; margin-bottom: 40px; font-size: 55px; font-weight: bold;">{{ car.name }}</p>
+
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 col-sm-12"  style="background-color: #FAEBD7; color: rgba(0,0,0,0.7);; padding: 20px; padding-left: 30px; border-radius: 5px;">
+				<p style="font-size: 20px;">Description: {{ car.description }}</p>
+				<p style="font-size: 20px;">Ratings: {{ car.ratings }}</p>
+				<p style="font-size: 20px;">Price: {{ car.price }}rs</p>
+				<p style="font-size: 20px;">Model: {{ car.year }}</p>
+				<p style="font-size: 20px;">Variant: {{ car.variant }}</p>
+				<p style="font-size: 20px;">Drivan: {{ car.milage }}Kms</p>
+				<p style="font-size: 20px;">Type: {{ car.type }}</p>
+				<div style="margin-top: 20px; font-size: 30px; font-weight: bold; color: white;">
+					
+					{% if  user_id %}
+					<div style="clear: both; margin-top: 20px; text-align: center; padding-top: 20px;">
+						<a style="" href="{{ url_for('addWishlist', user_id=user_id, car_id=car.id, carBrand_id=brand.id) }}">Add to Wishlist</a>
+					</div>	
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-lg-8 col-sm-12">
+				<div class="col-lg-6 col-md-6 col-sm-6">
+					<img style="width: 350px; height: 180px; border-radius: 5px; box-shadow: 0 30px 30px rgba(0,0,0,0.5);" data-toggle="modal" data-target="#myModal" onclick="$('#modimage').attr('src','/../../{{ car.image1 }}')" src="/../../{{ car.image1 }}">
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6">
+					<img style="width: 350px; height: 180px; border-radius: 5px; box-shadow: 0 30px 30px rgba(0,0,0,0.5);"   data-toggle="modal" data-target="#myModal" onclick="$('#modimage').attr('src','/../../{{ car.image2 }}')" src="/../../{{ car.image2 }}">
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6" style="margin-top: 40px;">
+					<img style="width: 350px; height: 180px; border-radius: 5px; box-shadow: 0 30px 30px rgba(0,0,0,0.5);"   data-toggle="modal" data-target="#myModal" onclick="$('#modimage').attr('src','/../../{{ car.image3 }}')" src="/../../{{ car.image3 }}">
+				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6" style="margin-top: 40px;">
+					<img style="width: 350px; height: 180px; border-radius: 5px; box-shadow: 0 30px 30px rgba(0,0,0,0.5);"   data-toggle="modal" data-target="#myModal" onclick="$('#modimage').attr('src','/../../{{ car.image4 }}')" src="/../../{{ car.image4 }}">
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width: 100%; height: 100%; margin: 0; padding: 0; padding-bottom: 50px; background-color: transparent;">
+    <!-- Modal content-->
+    <div class="modal-content" style="background-color: transparent; border-radius: 0;">
+      <div class="modal-body">
+      	<button style="border: 1px solid black; padding: 15px; background-color: white;" type="button" class="close" data-dismiss="modal">&times;</button>
+        <img id="modimage" style="margin-top: 5%; margin-bottom: 10%; margin-left: 25%; width: 650px; height: 350px; border-radius: 5px; box-shadow: 0 30px 30px rgba(0,0,0,0.5);"  src="">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</body>
+</html>
