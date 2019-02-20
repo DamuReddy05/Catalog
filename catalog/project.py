@@ -17,7 +17,7 @@ import requests
 
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, CarBrand, Car, User, wishList
+from catalog.database_setup import Base, CarBrand, Car, User, wishList
 
 
 app = Flask(__name__)
@@ -27,7 +27,7 @@ APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('/var/www/catalog/catalog/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Car.Showroom.Application"
 
 
@@ -74,7 +74,7 @@ def showLogin():
         random.choice(
             string.ascii_uppercase +
             string.digits +
-            string.ascii_lowercase) for x in xrange(32))
+            string.ascii_lowercase) for x in range(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
@@ -472,7 +472,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
+        print("Token's client ID does not match app's.")
         response.headers['Content-Type'] = 'application/json'
         return response
 
